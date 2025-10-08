@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Turma do Peanuts</title>
+  <style>
+    /* ==========================
+       BASE / TEMA
+       ========================== */
+    :root{
+      --bg:#FFF0F5;        
+      --panel:#f09dba;     
+      --muted:#C14786;     
+      --text:#7D1F4A;     
+      --brand:#ff008c;     
+      --brand-2:#f094c2;   
+      --ok:#FF5C8D;        
+      --warn:#FF4070;      
+      --danger:#D81B60;   
+      --radius:16px;
+      --shadow:0 10px 30px rgb(228, 137, 190);
+      --max:1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(135, 90, 119, 0.086), transparent 60%),
+                  radial-gradient(900px 600px at 110% 10%, rgba(255, 2, 188, 0.06), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:var(--brand)}
+
+    .container{max-width:var(--max); margin-inline:auto; padding:24px}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
+    
+    /* ==========================
+       HEADER / NAV
+       ========================== */
+    header{
+     position:sticky; top:0; z-index:50;
+  backdrop-filter: blur(8px);
+  background: var(--panel); 
+  border-bottom:1px solid var(--brand); 
+}
+    .nav{
+      display:flex; align-items:center; gap:16px; justify-content:space-between;
+      padding:12px 24px; max-width:var(--max); margin:auto;
+    }
+    .logo{display:flex; align-items:center; gap:10px; font-weight:700}
+    .logo img{width:36px; height:36px; border-radius:50%}
+    .menu{display:flex; gap:12px; flex-wrap:wrap}
+    .menu a{
+      text-decoration:none; color:var(--text); padding:8px 12px; border-radius:999px;
+      border:1px solid rgba(228, 92, 187, 0.3); opacity:.9
+    }
+    .menu a:hover{border-color:#ffffff; opacity:1}
+    
+    .hero h1{font-size: clamp(28px, 6vw, 52px); line-height:1.1; margin:0; color:var(--brand)}
+
+    /* ==========================
+       HERO
+       ========================== */
+   .hero{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center;
+      padding:40px 24px 8px; max-width:var(--max); margin:auto;
+      font-family: cursive;
+    }
+    .hero h1{font-size: clamp(28px, 6vw, 52px); line-height:1.1; margin:0; color:var(--brand)}
+    .badge{display:inline-flex; gap:8px; align-items:center; font-size:12px; color:var(--muted);
+      border:1px dashed rgba(148, 120, 141, 0.35); padding:6px 10px; border-radius:999px; margin-bottom:14px}
+    .cta{display:flex; gap:12px; margin-top:16px}
+    .btn{padding:10px 14px; border-radius:10px; border:1px solid rgba(183, 148, 184, 0.25); background:var(--panel); color:var(--text); text-decoration:none}
+    .btn.primary{background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#ededed; font-weight:700}
+    .hero .mock{
+      border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
+      aspect-ratio: 4 / 3; background: #fdf1d0; border:1px solid rgba(184, 148, 183, 0.2);
+      display:grid; grid-template-rows: 42px 1fr;
+    }
+    .mock .bar{display:flex; gap:6px; align-items:center; padding:10px; border-bottom:1px solid rgba(148,163,184,.15)}
+    .dot{width:10px; height:10px; border-radius:50%}
+    .dot.red{background:var(--danger)}.dot.yellow{background:var(--warn)}.dot.green{background:var(--ok)}
+    .mock img{width:100%; height:100%; object-fit:cover; display:block}
+
+
+    /* ==========================
+       SEÇÕES
+       ========================== */
+    section{padding-block:40px}
+    section h2{font-size: clamp(22px, 4vw, 32px); margin:0 0 12px}
+    section p{color:var(--muted); margin:0 0 18px}
+
+    /* Grade de cartões */
+    .cards{display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:16px}
+    .card{background:linear-gradient(180deg, rgba(255, 119, 169, 0.07), rgba(255, 119, 169, 0.03)); border:1px solid rgba(223, 106, 192, 0.2); border-radius:var(--radius); padding:18px}
+    .card h3{margin:8px 0 6px; font-size:18px}
+    .chip{display:inline-block; font-size:12px; color:#fff; background:var(--brand); padding:2px 8px; border-radius:999px}
+
+    /* Galeria */
+    .gallery{display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:10px}
+    .gallery figure{margin:0; border-radius:12px; overflow:hidden; border:1px solid rgba(184, 148, 169, 0.25); position:relative}
+    .gallery img{width:100%; height:140px; object-fit:cover; display:block; transition: transform .3s ease}
+    .gallery figcaption{position:absolute; inset:auto 0 0 0; padding:8px 10px; font-size:12px; color:#fff; background: linear-gradient(transparent, rgba(0,0,0,.55));}
+    .gallery figure:hover img{transform: scale(1.06)}
+
+    /* Tabela simples */
+    .table-wrap{overflow:auto; border:1px solid rgba(184, 148, 173, 0.25); border-radius:12px}
+    table{width:100%; border-collapse:collapse; min-width:520px; font-size:14px}
+    th, td{padding:10px 12px; border-bottom:1px solid rgba(184, 148, 174, 0.15)}
+    thead th{position:sticky; top:0; background:#ff85b8; text-align:left}
+
+    /* video */
+
+    .video, .musica {
+    height: 360px; 
+    text-align: left;}
+    .box video {
+    width: 40%;
+    height: auto;
+    display: block;
+    margin: 0;}
+
+    /* Formulário */
+    form{display:grid; gap:10px; max-width:560px}
+    label{font-size:14px; color:var(--muted)}
+    input, textarea, select{
+      width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(184, 148, 177, 0.25); background:#ffffff; color:var(--text)
+    }
+    input:focus, textarea:focus, select:focus{outline:2px solid var(--brand)}
+
+    /* Footer */
+    footer{border-top:1px solid rgba(184, 148, 178, 0.2); color:var(--muted)}
+
+
+    /* Responsivo */
+    @media (max-width: 820px){
+      .hero{grid-template-columns: 1fr;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <img src="https://i.pinimg.com/736x/17/bb/92/17bb92ffa172de86ce24a3abec1756e6.jpg" alt="Logo" />
+        <span>Curiosidades sobre nossa turma!</span>
+      </div>
+      <div class="menu">
+        <a href="#sobre">Sobre</a>
+        <a href="#galeria">Personagens</a>
+        <a href="#recursos">História</a>
+        <a href="#tabela">Favoritos</a>
+        <a href="#contato">Sorteio</a>
+      </div>
+    </nav>
+  </header>
+
+
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <span class="badge"> Um pouco sobre a turma mais famosa dos anos 90 </strong></span>
+        <h1>A turma do <br> Charlie Brown</h1>
+        <div class="cta">
+          <a class="btn primary" href="#galeria">Ver galeria</a>
+          <a class="btn" href="#contato">Sorteio</a>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="bar">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <img src="https://i.pinimg.com/originals/0c/79/60/0c7960d72a95e1c40c4b3a8b2c011264.gif" alt="Snoopy" />
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="container">
+      <h2>Sobre nosso site!</h2>
+      <p>Bem-vindo ao universo da Turma do Charlie Brown! Aqui você vai encontrar informações sobre toda a galera que marcou gerações. Nosso objetivo é trazer a nostalgia para fãs de todas as idades. </p>
+      <div class="cards" style="margin-top:14px">
+        <article class="card">
+          <h3>Charles M. Schulz se inspirou em si mesmo</h3>
+          <p>Charlie Brown foi inspirado na própria timidez e insegurança de Schulz quando era criança.</p>
+        </article>
+        <article class="card">
+          <h3>O primeiro quadrinho saiu em 1950</h3>
+          <p>A tirinha foi publicada pela primeira vez em 2 de outubro de 1950 e rapidamente se tornou popular.</p>
+        </article>
+        <article class="card">
+          <h3>Snoopy nasceu como cão normal</h3>
+          <p>No início, ele era apenas o cachorro de Charlie Brown, mas logo ganhou personalidade própria e começou a ter aventuras imaginárias.</p>
+        </article>
+        <article class="card">
+          <h3>Linus e seu cobertor</h3>
+          <p>Linus é famoso por nunca largar seu cobertor azul, que se tornou um símbolo de conforto e segurança para muitas gerações.</p>
+        </article>
+         <article class="card">
+          <h3>Woodstock tem nome oficial</h3>
+          <p>O passarinho amarelo foi nomeado em homenagem ao festival Woodstock de 1969.</p>
+        </article>
+         <article class="card">
+          <h3>Schroeder ama Beethoven de verdade</h3>
+          <p>O criador era fã de música clássica e quis transmitir isso pelo personagem, que toca piano com muita dedicação.</p>
+        </article>
+         <article class="card">
+          <h3>Peanuts é o quadrinho mais traduzido do mundo</h3>
+          <p>As tirinhas foram publicadas em mais de 75 países e traduzidas para dezenas de idiomas.</p>
+        </article>
+         <article class="card">
+          <h3>Temas profundos em histórias simples</h3>
+          <p>Apesar de parecer infantil, os quadrinhos abordam medos, inseguranças, amizade e a vida cotidiana com uma profundidade que agrada crianças e adultos.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section id="galeria" class="container">
+      <h2>Personagens</h2>
+      <div class="gallery">
+        <figure>
+          <img src="https://i.pinimg.com/736x/81/4d/3b/814d3b086b65de0f9e601211fc979ac9.jpg"alt="Charlie Brown">
+          <figcaption>Charlie Brown</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.pinimg.com/736x/ec/f0/b8/ecf0b88d2c95299de816b1c18852ed3c.jpg" alt="Snoopy">
+          <figcaption>Snoopy</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.pinimg.com/736x/17/70/89/17708956e6eb14eebfcf57607df652ff.jpg" alt="Lucy Van Pelt">
+          <figcaption>Lucy Van Pelt</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.pinimg.com/736x/17/cf/8b/17cf8b42fd54379c29ba629426799de7.jpg" alt="Linus">
+          <figcaption>Linus Van Pelt</figcaption>
+        </figure>
+         <figure>
+          <img src="https://i.pinimg.com/1200x/01/8a/f4/018af4d15302482471cf0658ae42ff74.jpg" alt="Sally">
+          <figcaption>Sally Brown</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.pinimg.com/736x/2e/36/0b/2e360b1b98a2c06ee8568bd9da1715da.jpg" alt="Patty">
+          <figcaption>Patty Pimentinha</figcaption>
+        </figure>
+         <figure>
+          <img src="https://i.pinimg.com/736x/43/eb/92/43eb92ac10b42b88ba97bc676c3dc1f8.jpg" alt="Schroeder">
+          <figcaption>Schroeder</figcaption>
+        </figure>
+         <figure>
+          <img src="https://i.pinimg.com/1200x/27/f6/6c/27f66c6dcf55f60c338f3772cf066a66.jpg" alt="Marcie">
+          <figcaption>Marcie</figcaption>
+        </figure>
+         <figure>
+          <img src="https://i.pinimg.com/736x/19/e5/8f/19e58f734e1678e7370ba236208c104b.jpg" alt="Frieda">
+          <figcaption>Frieda</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.pinimg.com/736x/7b/0f/36/7b0f369637aa9ece8e5e45fce574e110.jpg" alt="Franklin">
+          <figcaption>Franklin</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.pinimg.com/736x/7b/27/ae/7b27aecba9d97aba730108ca542bb1f0.jpg" alt="Franklin">
+          <figcaption>Woodstock</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.pinimg.com/736x/38/df/41/38df41471f2d55e6a674d01c1ae9758b.jpg" alt="Franklin">
+          <figcaption>Rerun</figcaption>
+        </figure>
+      </div>
+    </section>
+        
+
+    <!-- RECURSOS / LISTA -->
+    <section id="recursos" class="container">
+      <h2>História</h2>
+        <p>A Turma foi criada pelo cartunista americano Charles M. Schulz e estreou em 2 de outubro de 1950 nos jornais dos Estados Unidos. Originalmente chamada apenas de <em>Peanuts</em>, a série rapidamente conquistou leitores de todas as idades e se tornou uma das mais influentes da história.</p>
+        <p>O personagem central, Charlie Brown, é um garoto inseguro, otimista e frequentemente azarado, acompanhado de seu cão imaginativo, Snoopy, que vive aventuras de fantasia como o famoso “Barão Vermelho”. Outros personagens importantes incluem Lucy Van Pelt, Linus, Sally e diversos amigos que refletem diferentes aspectos da vida e das relações humanas.</p>
+        <p>As tirinhas exploram temas universais como amizade, amor, frustração, esperança e criatividade, sempre com humor inteligente e um toque de melancolia. Além dos quadrinhos, <em>Peanuts</em> se expandiu para programas de TV, filmes e produtos licenciados, tornando-se um fenômeno cultural mundial.</p>
+        <p>Hoje, a Turma dos Peanuts é um marco da cultura pop, influenciando gerações e permanecendo relevante graças à universalidade de suas mensagens e à personalidade marcante de seus personagens.</p>
+    </section>
+
+   <!-- especiais -->
+<section id="especiais" class="container">
+  <h2>Especiais de TV do Snoopy</h2>
+  <ul>
+    <li><strong>Be My Valentine, Charlie Brown</strong> – 14 de fevereiro de 1975</li>
+    <li><strong>You're in Love, Charlie Brown</strong> – 12 de junho de 1967</li>
+    <li><strong>A Charlie Brown Valentine</strong> – 14 de fevereiro de 2002</li>
+    <li><strong>He's Your Dog, Charlie Brown</strong> – 14 de fevereiro de 1968</li>
+    <li><strong>It's the Great Pumpkin, Charlie Brown</strong> – 27 de outubro de 1966</li>
+    <li><strong>A Charlie Brown Christmas</strong> – 9 de dezembro de 1965</li>
+    <li><strong>A Charlie Brown Thanksgiving</strong> – 27 de novembro de 1973</li>
+    <li><strong>It's the Easter Beagle, Charlie Brown</strong> – 9 de abril de 1974</li>
+    <li><strong>Snoopy Presents: A Summer Musical</strong> – 2025</li>
+    <li><strong>Snoopy's Getting Married, Charlie Brown</strong> – 1985</li>
+    <li><strong>Snoopy's Reunion</strong> – 1991</li>
+    <li><strong>Snoopy Presents: Welcome Home, Franklin</strong> – 2024</li>
+  </ul>
+</section>
+
+<!-- Vídeo -->
+     <section id="video" class="container">
+    <div class="box video">
+      <h2>Episódio mais famoso: It's the Great Pumpkin, Charlie Brown, de 1966</h2>
+      <video controls>
+        <source src="videoplayback.mp4" type="video/mp4">
+      </video>
+    </div>
+    </section>
+
+
+    <!-- TABELA EXEMPLO -->
+    <section id="tabela" class="container">
+      <h2>Personagens favoritos</h2>
+      <p>Personagens mais conhecidos e populares da turma.</p>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Idade</th>
+        <th>Ano de estreia</th>
+        <th>Popularidade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Charlie Brown</td>
+        <td>8</td>
+        <td>1950</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td>Snoopy</td>
+        <td>7</td>
+        <td>1950</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td>Lucy Van Pelt</td>
+        <td>8</td>
+        <td>1950</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td>Linus Van Pelt</td>
+        <td>7</td>
+        <td>1950</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td>Sally Brown</td>
+        <td>6</td>
+        <td>1959</td>
+        <td>⭐⭐⭐</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+    <!-- CONTATO / FORM -->
+    <section id="contato" class="container">
+      <h2>Sorteio</h2>
+      <p>Responda o formulário abaixo e participe de um sorteio para virar um personagem da nossa turma!</p>
+      <form onsubmit="event.preventDefault(); alert('Formulário enviado!');">
+        <div>
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" placeholder="Seu nome" required>
+        </div>
+         <div>
+          <label for="Telefone">Telefone</label>
+          <input id="Telefone" name="Telefone" placeholder="Seu telefone" required>
+        </div>
+        <div>
+          <label for="email">E-mail</label>
+          <input id="email" type="email" name="email" placeholder="voce@exemplo.com" required>
+        </div>
+        <div>
+          <label for="assunto">Qual edição você quer participar?</label>
+          <select id="Edição" name="assunto">
+            <option>Valentine’s Peanuts</option>
+            <option>Vintage Comic</option>
+            <option>Snoopy Party</option>
+          </select>
+        </div>
+        <div>
+          <label for="mensagem">Mensagem</label>
+          <textarea id="Escreva um recadinho para nós ♡ ˎˊ˗" name="mensagem" rows="4" placeholder="Escreva um recadinho para nós ♡ ˎˊ"></textarea>
+        </div>
+        <button class="btn primary" type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="container" style="padding-bottom:60px">
+    <small>© 2025 • Feito por <a href="#">Valentina Senger</a>. • <a href="#">Voltar ao topo</a></small>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.menu a').forEach(a=>{
+      a.addEventListener('click', e=>{
+        if(a.hash){ e.preventDefault(); document.querySelector(a.hash)?.scrollIntoView({behavior:'smooth'}) }
+      })
+    })
+  </script>
+</body>
+</html>
